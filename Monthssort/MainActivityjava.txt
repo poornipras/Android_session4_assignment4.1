@@ -1,0 +1,72 @@
+package com.pooja.months;
+
+import android.content.res.Resources;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    ListView list_months;
+    Button btn_ascending, btn_descending;
+    String[] Months = new String[]{};
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Resources res=getApplicationContext().getResources();
+        Months=res.getStringArray(R.array.Months);
+        btn_ascending = (Button) findViewById(R.id.btn_ascending);
+        btn_descending = (Button) findViewById(R.id.btn_descending);
+        list_months = (ListView) findViewById(R.id.list_months);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1,Months);
+        list_months.setAdapter(adapter);
+        list_months.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getBaseContext(), adapterView.getItemAtPosition(i) + "is selected", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void sort() {
+        Arrays.sort(Months);
+        ArrayAdapter<String> ascend = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, Months);
+        list_months.setAdapter(ascend);
+    }
+
+   public void reverse()
+   {
+       Arrays.sort(Months,Collections.<String>reverseOrder());
+       ArrayAdapter<String> desscend = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1,Months);
+       list_months.setAdapter(desscend);
+   }
+    @Override
+    public void onClick(View view) {
+        switch(view.getId())
+        {
+            case R.id.btn_ascending:
+                                     sort();
+                                     break;
+
+            case R.id.btn_descending:
+                                      reverse();
+                                      break;
+        }
+    }
+}
